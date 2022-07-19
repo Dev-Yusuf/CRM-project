@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .models import Lead, Agent
-from .forms import LeadForm
+from .forms import LeadModelForm
 
 
 # Create your views here.
@@ -13,9 +13,9 @@ def lead_list(request):
     return render(request, 'leads/lead_list.html', context)
 
 def lead_create(request):
-    form = LeadForm()
+    form = LeadModelForm()
     if request.method == "POST":
-        form = LeadForm(request.POST)
+        form = LeadModelForm(request.POST)
         if form.is_valid():
             
             agent = Agent.objects.first()
