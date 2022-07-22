@@ -27,10 +27,18 @@ def lead_create(request):
             )
             return redirect("/leads")
 
-          
-            
-
+def lead_detail(request, pk):
+    lead = Lead.objects.get(id=pk)
     context = {
-        "form": form
+        "lead": lead
     }
-    return render(request, 'leads/lead_create.html', context)
+    return render(request, "leads/lead_detail.html", context)
+
+
+def lead_update(request, pk):
+    lead = Lead.objects.get(id=pk)
+    context = {
+        "lead": lead
+    }
+    return render(request, "leads/update_lead.html", context)
+    
