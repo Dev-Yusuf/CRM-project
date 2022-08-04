@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import redirect, render
 from .models import Lead, Agent
 from .forms import LeadModelForm
@@ -17,15 +18,13 @@ def lead_create(request):
     if request.method == "POST":
         form = LeadModelForm(request.POST)
         if form.is_valid():
-            
-            agent = Agent.objects.first()
-            lead = Lead.objects.create(
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
-                age=form.cleaned_data['age'],
-                agent=agent
-            )
+            form.save()
             return redirect("/leads")
+    context = {
+        "form": form
+    }
+    return render(request, 'leads/lead_create.html', context)
+            
 
 def lead_detail(request, pk):
     lead = Lead.objects.get(id=pk)
@@ -37,8 +36,20 @@ def lead_detail(request, pk):
 
 def lead_update(request, pk):
     lead = Lead.objects.get(id=pk)
+    form = LeadModelForm(instance=lead)
+    if request.method == "POST":
+        form = LeadModelForm(request.POST, instance=lead)
+        if form.is_valid():
+            lead.save()
+            return redirect("/leads")
     context = {
-        "lead": lead
+        "form": form,
+        "lead": lead 
     }
     return render(request, "leads/update_lead.html", context)
+
+def lead_delete(request, pk):
+    lead = Lead.objects.get(id=pk)
+    lead.delete()
+    return redirect("/leads")
     

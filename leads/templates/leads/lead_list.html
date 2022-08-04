@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
     <h1>Welcome to the Leads Home Page</h1>
-    <a href="/leads/create">create a new lead</a>
-    <h2>the Leads</h2>
+    <a href="{% url 'lead-create' %}">create a new lead</a>
+     <h2>the Leads</h2>
     
       {% for lead in leads %}
       <div class "lead_list">
-        <a href="/leads/{{ lead.pk }}/">{{ lead.first_name }} {{lead.first_name}}</a>, Age:{{lead.age}}
+        <a href="{% url 'lead-detail' lead.pk %}">{{ lead.first_name }} {{lead.last_name}}</a>, Age:{{lead.age}}
       </div>
       {% endfor %}  
-    </ul>
-</body>
-</html>
+
+{% endblock content %}
